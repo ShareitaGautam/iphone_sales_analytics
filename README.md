@@ -1,26 +1,33 @@
-Project Overview
+# iPhone Sales Analytics Platform
+
+iPhone Sales Analytics Platform built using **HDFS, PySpark, Hive, and Medallion Architecture** with a **Star Schema data model**.
+
+---
+
+## Project Overview
 
 This project builds a simple data pipeline to analyze iPhone sales across stores, customers, and products.
 
-The pipeline reads raw CSV data, processes it using PySpark, stores the results in Hive tables, and organizes the data using Medallion Architecture (Bronze → Silver → Gold).
+The pipeline reads raw CSV data, processes it using PySpark, stores the results in Hive tables, and organizes the data using **Medallion Architecture (Bronze → Silver → Gold)**.
 
 The goal is to transform raw sales data into a structured format that can be used for analytics queries such as revenue by product or revenue by store.
 
-Technologies Used
+---
 
-HDFS
+## Technologies Used
 
-PySpark
+- HDFS
+- PySpark
+- Hive
+- Parquet
+- Medallion Architecture
+- Star Schema
 
-Hive
+---
 
-Parquet
+## Data Pipeline Architecture
 
-Medallion Architecture
-
-Star Schema
-
-Data Pipeline Architecture
+```text
 CSV Files
    ↓
 HDFS
@@ -78,7 +85,7 @@ Purpose
 
 Keep raw data
 
-Convert CSV → Parquet
+Convert CSV to Parquet
 
 Prepare data for transformation
 
@@ -206,7 +213,7 @@ iphone-sales-project
 │   ├── silver
 │   │   └── silver_transform.py
 │   ├── gold
-│   │   └── gold_loader.py
+│   │   │── gold_loader.py
 │   ├── sql
 │   │   └── analytics_queries.sql
 │   └── README.md
