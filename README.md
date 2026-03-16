@@ -1,14 +1,12 @@
-# iphone_sales_analytics
-iPhone Sales Analytics Platform built using HDFS, PySpark, Hive, and Medallion Architecture with a Star Schema data model.
-
 Project Overview
 
 This project builds a simple data pipeline to analyze iPhone sales across stores, customers, and products.
-The pipeline reads raw CSV data, processes it using PySpark, stores it in Hive tables, and organizes the data using Medallion Architecture (Bronze → Silver → Gold).
 
-The goal is to make the raw sales data ready for analytics queries like revenue by product or revenue by store.
+The pipeline reads raw CSV data, processes it using PySpark, stores the results in Hive tables, and organizes the data using Medallion Architecture (Bronze → Silver → Gold).
 
-Technologies used:
+The goal is to transform raw sales data into a structured format that can be used for analytics queries such as revenue by product or revenue by store.
+
+Technologies Used
 
 HDFS
 
@@ -16,16 +14,13 @@ PySpark
 
 Hive
 
-Parquet format
+Parquet
 
 Medallion Architecture
 
 Star Schema
 
-Data Flow Architecture
-
-The pipeline follows this flow:
-
+Data Pipeline Architecture
 CSV Files
    ↓
 HDFS
@@ -36,13 +31,13 @@ Silver Layer (cleaned data)
    ↓
 Gold Layer (analytics tables)
 
-Each layer has a specific purpose.
+Each layer prepares the data for the next stage.
 
 Step 1 – Raw Data (CSV)
 
-We created four CSV files that represent sales data.
+Four CSV files were created to simulate store sales data.
 
-Files:
+Files
 
 customers.csv
 
@@ -54,7 +49,7 @@ sales.csv
 
 These files were created in the Docker terminal and uploaded to HDFS.
 
-Example location in HDFS:
+Example HDFS location:
 
 /data/iphone/
 
@@ -72,79 +67,66 @@ Step 2 – Bronze Layer (Raw Ingestion)
 
 The Bronze layer stores the raw data exactly as it is.
 
-Here we read CSV files from HDFS using PySpark and save them as Hive tables in Parquet format.
+CSV files are read from HDFS using PySpark and saved as Hive tables in Parquet format.
 
-Bronze tables created:
-
+Bronze Tables
 bronze_customers
 bronze_products
 bronze_stores
 bronze_sales
+Purpose
 
-Purpose:
+Keep raw data
 
-keep raw data
+Convert CSV → Parquet
 
-convert CSV → Parquet
+Prepare data for transformation
 
-prepare data for transformation
-
-Code location:
-
+Code Location
 student_project/bronze/bronze_ingestion.py
 Step 3 – Silver Layer (Data Cleaning)
 
 The Silver layer cleans and standardizes the data.
 
-Tasks performed:
+Tasks Performed
 
-enforce schema
+Enforce schema
 
-convert column data types
+Convert column data types
 
-prepare tables for joins
+Prepare tables for joins
 
-partition the sales table by date
+Partition the sales table by date
 
-Silver tables created:
-
+Silver Tables
 silver_customers
 silver_products
 silver_stores
 silver_sales
 
-sales table is partitioned by:
+The sales table is partitioned by:
 
 sale_date
-
-Code location:
-
+Code Location
 student_project/silver/silver_transform.py
 Step 4 – Gold Layer (Star Schema)
 
 The Gold layer creates analytics tables using a Star Schema.
 
-Structure:
-
+Schema Structure
           dim_date
              |
 dim_customer -- fact_sales -- dim_product
              |
           dim_store
-
-Dimension tables:
-
+Dimension Tables
 dim_customer
 dim_product
 dim_store
 dim_date
-
-Fact table:
-
+Fact Table
 fact_sales
-
-The fact table contains:
-
+Fact Table Columns
 sale_id
 customer_id
 product_id
@@ -160,29 +142,27 @@ quantity × unit_price
 The fact table is partitioned by:
 
 date_key
-
-Code location:
-
+Code Location
 student_project/gold/gold_loader.py
 Hive Tables in HDFS
 
-All tables are stored in Hive warehouse:
+All Hive tables are stored in:
 
 /data/hive/warehouse/iphone_analytics.db/
 
 This directory contains:
 
-bronze_tables
-silver_tables
-dimension_tables
-fact_sales
+Bronze tables
 
-This proves the Medallion architecture is implemented.
+Silver tables
 
-Business Queries
+Dimension tables
 
-Example analytics queries we ran in Hive.
+Fact table
 
+This confirms that the Medallion Architecture is implemented.
+
+Example Business Queries
 Revenue by Product
 SELECT p.product_name, SUM(f.total_amount) AS revenue
 FROM fact_sales f
@@ -196,11 +176,11 @@ JOIN dim_store s
 ON f.store_id = s.store_id
 GROUP BY s.store_name;
 
-These queries show how the data can be used for analytics.
+These queries demonstrate how the processed data can be used for analytics.
 
 Data Validation
 
-We validated the pipeline by checking row counts.
+Row counts were checked to ensure data integrity.
 
 SELECT COUNT(*) FROM bronze_sales;
 SELECT COUNT(*) FROM silver_sales;
@@ -234,7 +214,7 @@ iphone-sales-project
 └── screenshots
 Summary
 
-In this project we built a small data engineering pipeline that:
+In this project we built a simple data engineering pipeline that:
 
 Reads raw sales data from CSV files
 
@@ -246,4 +226,4 @@ Creates analytics tables in the Gold layer
 
 Runs business queries using Hive
 
-The final result is a structured dataset that can be easily used for sales analytics.
+The final result is a structured dataset that can be used for sales analysis.
