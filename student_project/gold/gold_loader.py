@@ -3,6 +3,7 @@ from common_utils.spark_utils import get_spark_session
 from common_utils.constants import DATABASE_NAME
 
 
+
 # ---------------------------------------------------
 # Create Dimension Table: Customer
 # This table stores customer details used for analysis.
