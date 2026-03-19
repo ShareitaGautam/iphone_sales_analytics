@@ -170,12 +170,14 @@ Fact table
 This confirms that the Medallion Architecture is implemented.
 
 Example Business Queries
+
 Revenue by Product
 SELECT p.product_name, SUM(f.total_amount) AS revenue
 FROM fact_sales f
 JOIN dim_product p
 ON f.product_id = p.product_id
 GROUP BY p.product_name;
+
 Revenue by Store
 SELECT s.store_name, SUM(f.total_amount) AS revenue
 FROM fact_sales f
@@ -203,22 +205,50 @@ Project Folder Structure
 iphone-sales-project
 │
 ├── common_utils
-│   ├── schemas
-│   ├── spark_utils.py
-│   └── constants.py
+│ ├── spark_utils.py # Creates Spark session with Hive support
+│ ├── constants.py # Stores database name and constants
+│ ├── init.py
+│ └── schemas
+│ └── README.md # Explanation of schema handling (Silver layer)
+│
+├── data   # Sample input datas
+│ ├── customers.csv 
+│ ├── products.csv
+│ ├── sales.csv
+│ └── stores.csv
 │
 ├── student_project
-│   ├── bronze
-│   │   └── bronze_ingestion.py
-│   ├── silver
-│   │   └── silver_transform.py
-│   ├── gold
-│   │   │── gold_loader.py
-│   ├── sql
-│   │   └── analytics_queries.sql
-│   └── README.md
+│ ├── bronze
+│ │ └── bronze_ingestion.py # Loads raw CSV → Bronze tables
+│ │
+│ ├── silver
+│ │ └── silver_transform.py # Cleans data and applies schema
+│ │
+│ ├── gold
+│ │ └── gold_loader.py # Creates dimensions + fact table
+│ │
+│ ├── sql
+│ │ └── check_tables.py # Script to validate tables and data
+│ │
+│ ├── init.py
+│ └── README.md # Project documentation
 │
-└── screenshots
+├── screenshots # screenshots
+│ ├── show_tables.png
+│ ├── describe_silver_sales.png
+│ ├── describe_fact_sales.png
+│ ├── hdfs_structure.png
+│ ├── partitions.png
+│ ├── query_product_revenue.png
+│ ├── row_counts_bronze_sales.png
+│ ├── row_counts_silver_sales.png
+│ ├── row_counts_fact_sales.png
+│ ├── data_sampling_silver_sales.png
+│ └── data_sampling_fact_sales.png
+│
+├── main.py 
+└── README.md
+
 Summary
 
 In this project we built a simple data engineering pipeline that:
